@@ -410,6 +410,7 @@ void LinkedListCollection<K,V>::merge_sort()
  head = merge_sort(head, size());;
  Node* ptr = head;
 
+ //update tail pointer
  while(ptr->next != nullptr)
   ptr = ptr->next;
 
@@ -420,18 +421,23 @@ template<typename K, typename V>
 typename LinkedListCollection<K,V>::Node*
 LinkedListCollection<K,V>::merge_sort(Node* left, int len)
 {
+ //if only one node
  if(len == 1)
   return left;
 
+ //set middle
  int middle = ((len-1)/2)+1;
  Node* ptr = left;
 
+ //find middle node
  for(int i = 0; i < middle -1; i++)
   ptr = ptr->next;
 
+ //initialize left and right temp nodes
  Node* tempLeft = left;
  Node* tempRight = ptr->next;
 
+ //recursion steps
  ptr->next = nullptr;
  tempLeft = merge_sort(tempLeft, middle);
  tempRight = merge_sort(tempRight, len-middle);
@@ -439,6 +445,7 @@ LinkedListCollection<K,V>::merge_sort(Node* left, int len)
  Node* front = nullptr;
  Node* merged = nullptr;
 
+ //if left is bigger than right
  if (tempLeft->key > tempRight->key)
  {
   front = tempRight;
@@ -452,6 +459,7 @@ LinkedListCollection<K,V>::merge_sort(Node* left, int len)
  
  merged = front;
 
+ //while left and right exist
  while(tempLeft && tempRight)
  {
   if (tempLeft->key > tempRight->key)
@@ -493,6 +501,7 @@ void LinkedListCollection<K,V>::quick_sort()
 {
  head = quick_sort(head, length);
 
+ //update tail pointer 
  Node* ptr = head;
  while(ptr->next != nullptr)
   ptr = ptr->next;
@@ -504,6 +513,7 @@ template<typename K, typename V>
 typename LinkedListCollection<K,V>::Node*
 LinkedListCollection<K,V>::quick_sort(Node* start, int len)
 {
+ //if length is <= 2
  if (len <= 1) 
   return start;
  else if (len == 2) 
@@ -520,6 +530,8 @@ LinkedListCollection<K,V>::quick_sort(Node* start, int len)
    return start;
  }
 
+ //if length is bigger than 2
+ //initlialize new nodes and ints
   Node* pivot = start;
   Node* ptr = pivot->next;
   int smallListSize = 0;
@@ -529,6 +541,7 @@ LinkedListCollection<K,V>::quick_sort(Node* start, int len)
   Node* right = nullptr;
   Node* right_tail = nullptr;
 
+  //while loop that runs splitting logic
   while (ptr != nullptr) 
   {
    if (ptr->key < pivot->key)
@@ -568,9 +581,11 @@ LinkedListCollection<K,V>::quick_sort(Node* start, int len)
   if(right_tail)
    right_tail->next = nullptr;
 
+  //recursion step
   left = quick_sort(left, smallListSize);
   right = quick_sort(right, largeListSize);
 
+  //merging step
   Node* front = nullptr;
   while (left)
   {
